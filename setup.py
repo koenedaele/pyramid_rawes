@@ -11,12 +11,12 @@ requires = [
     'rawes'
     ]
 
-tests_requires = []
-
-testing_extras = tests_requires + [
+tests_requires = [
     'nose',
     'coverage'
     ]
+
+testing_extras = tests_requires + []
 
 setup(name='pyramid_rawes',
       version='0.1.0',
