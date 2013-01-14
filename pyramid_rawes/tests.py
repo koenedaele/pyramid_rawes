@@ -1,9 +1,12 @@
 # -*- coding: utf8 -*-
 
+from pyramid import testing
+
 from pyramid_rawes import (
     IRawES,
     get_rawes,
-    _build_rawes
+    _build_rawes,
+    includeme
     )
 
 import rawes
@@ -52,3 +55,13 @@ class TestGetAndBuild(unittest.TestCase):
             })
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
+
+class TestIncludeMe(unittest.TestCase):
+
+    def test_includeme(self):
+        config = testing.setUp()
+        config.registry.settings['es.uri'] = 'localhost:9200'
+        includeme(config)
+        ES = config.registry.queryUtility(IRawES)
+        self.assertIsInstance(ES, rawes.Elastic)
+        
