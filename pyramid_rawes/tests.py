@@ -6,7 +6,8 @@ from pyramid_rawes import (
     IRawES,
     get_rawes,
     _build_rawes,
-    includeme
+    includeme,
+    _parse_settings
     )
 
 import rawes
@@ -49,19 +50,71 @@ class TestGetAndBuild(unittest.TestCase):
         ES2 = _build_rawes(r)
         self.assertEquals(ES, ES2)
 
-    def test_build_rawes_minimal_settings(self):
-        r = TestRegistry({
-            'es.uri': ''
-            })
+    def test_build_rawes_default_settings(self):
+        r = TestRegistry()
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
+
+    def test_build_rawes_custom_settings(self):
+        settings = {
+            'rawes.url': 'elastic.search.org:9200',
+            'rawes.path': '/search',
+            'rawes.timeout': 123,
+            'rawes.connection_type': 'http',
+            'rawes.except_on_error': True
+            }
+        r = TestRegistry(settings)
+        ES = _build_rawes(r)
+        self.assertIsInstance(ES, rawes.Elastic)
+        self.assertEquals('elastic.search.org:9200', ES.url)
+
+
+class TestSettings(unittest.TestCase):
+
+    def _assert_contains_all_keys(self, args):
+        self.assertIn('url', args)
+        self.assertIn('path', args)
+        self.assertIn('connection_type', args)
+        self.assertIn('except_on_error', args)
+        self.assertIn('timeout', args)
+
+    def test_get_default_settings(self):
+        settings = {}
+        args = _parse_settings(settings)
+        self._assert_contains_all_keys(args)
+
+    def test_get_some_settings(self):
+        settings = {
+            'rawes.url': 'elastic.search.org:9200',
+            'rawes.timeout': 123,
+            'rawes.except_on_error': True
+            }
+        args = _parse_settings(settings)
+        self._assert_contains_all_keys(args)
+        self.assertEquals('elastic.search.org:9200', args['url'])
+        self.assertEquals(123, args['timeout'])
+        self.assertEquals(True, args['except_on_error'])
+
+    def test_get_all_settings(self):
+        settings = {
+            'rawes.url': 'elastic.search.org:9200',
+            'rawes.path': '/search',
+            'rawes.timeout': 123,
+            'rawes.connection_type': 'http',
+            'rawes.except_on_error': True
+            }
+        args = _parse_settings(settings)
+        self._assert_contains_all_keys(args)
+        self.assertEquals(123, args['timeout'])
+        self.assertEquals(True, args['except_on_error'])
 
 class TestIncludeMe(unittest.TestCase):
 
     def test_includeme(self):
         config = testing.setUp()
-        config.registry.settings['es.uri'] = 'localhost:9200'
+        config.registry.settings['rawes.url'] = 'localhost:9300'
         includeme(config)
         ES = config.registry.queryUtility(IRawES)
         self.assertIsInstance(ES, rawes.Elastic)
+        self.assertEquals('localhost:9300', ES.url)
         
