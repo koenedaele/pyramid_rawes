@@ -8,7 +8,7 @@ from pyramid_rawes import (
     _build_rawes,
     includeme,
     _parse_settings
-    )
+)
 
 import rawes
 
@@ -16,6 +16,7 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+
 
 class TestRegistry(object):
 
@@ -33,6 +34,7 @@ class TestRegistry(object):
 
     def registerUtility(self, rawes, iface):
         self.rawes = rawes
+
 
 class TestGetAndBuild(unittest.TestCase):
 
@@ -62,7 +64,7 @@ class TestGetAndBuild(unittest.TestCase):
             'rawes.timeout': 123,
             'rawes.connection_type': 'http',
             'rawes.except_on_error': True
-            }
+        }
         r = TestRegistry(settings)
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
@@ -88,7 +90,7 @@ class TestSettings(unittest.TestCase):
             'rawes.url': 'elastic.search.org:9200',
             'rawes.timeout': 123,
             'rawes.except_on_error': True
-            }
+        }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
         self.assertEquals('elastic.search.org:9200', args['url'])
@@ -102,11 +104,12 @@ class TestSettings(unittest.TestCase):
             'rawes.timeout': 123,
             'rawes.connection_type': 'http',
             'rawes.except_on_error': True
-            }
+        }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
         self.assertEquals(123, args['timeout'])
         self.assertEquals(True, args['except_on_error'])
+
 
 class TestIncludeMe(unittest.TestCase):
 
@@ -117,4 +120,3 @@ class TestIncludeMe(unittest.TestCase):
         ES = config.registry.queryUtility(IRawES)
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEquals('localhost:9300', ES.url)
-        
