@@ -76,8 +76,13 @@ def get_rawes(registry):
     """
     Get the RawES connection.
     """
-    return registry.queryUtility(IRawES)
+    #Argument might be a config or request
+    regis = getattr(registry, 'registry', None)
+    if regis is None:
+        regis = registry
+    return regis.queryUtility(IRawES)
 
 
 def includeme(config):
-    _build_rawes(config.registry)
+    rawes = _build_rawes(config.registry)
+    config.add_directive('get_rawes', get_rawes)

@@ -52,4 +52,13 @@ Eg. in a view:
         # execute search
         # ...
 
+You can also get a rawes_ instance by calling the get_rawes directive on the
+config.
+
+.. code-block:: python
+
+    config = Configurator()
+    config.include('pyramid_rawes')
+    ES = config.get_rawes()
+
 .. _rawes: https://github.com/humangeo/rawes

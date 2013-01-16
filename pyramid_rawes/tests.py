@@ -113,10 +113,21 @@ class TestSettings(unittest.TestCase):
 
 class TestIncludeMe(unittest.TestCase):
 
+    def setUp(self):
+        self.config = testing.setUp()
+        self.config.registry.settings['rawes.url'] = 'localhost:9300'
+
+    def tearDown(self):
+        del self.config
+
     def test_includeme(self):
-        config = testing.setUp()
-        config.registry.settings['rawes.url'] = 'localhost:9300'
-        includeme(config)
-        ES = config.registry.queryUtility(IRawES)
+        includeme(self.config)
+        ES = self.config.registry.queryUtility(IRawES)
+        self.assertIsInstance(ES, rawes.Elastic)
+        self.assertEquals('localhost:9300', ES.url)
+
+    def test_directive_was_added(self):
+        includeme(self.config)
+        ES = self.config.get_rawes()
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEquals('localhost:9300', ES.url)
