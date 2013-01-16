@@ -18,7 +18,9 @@ To install pyramid_rawes, use pip
 Setup
 -----
 
-To activate pyramid_rawes::
+To activate pyramid_rawes
+
+.. code-block:: python
 
     config = Configurator()
     config.include('pyramid_rawes')
@@ -29,7 +31,9 @@ Usage
 -----
 
 To get a RawES_ instance, call get_rawes with the current application registry. 
-Eg. in a view::
+Eg. in a view
+
+.. code-block:: python
 
     from pyramid_rawes import get_rawes
 
