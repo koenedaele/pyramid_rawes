@@ -25,6 +25,16 @@ To activate pyramid_rawes
     config = Configurator()
     config.include('pyramid_rawes')
 
+
+By default, this will add an instance with all the default parameters 
+(eg. Elastic Search is assumed to run at localhost:9200). To configure your 
+RawES_ instance, you can use the pyramid settings file.
+
+.. code-block:: ini
+
+    rawes.url = localhost:9500
+    rawes.connection_type = http
+
 Once you have activated pyramid_rawes, a RawES_ instance is added to the registry.
 
 Usage
@@ -41,5 +51,7 @@ Eg. in a view
         ES = get_rawes(request.registry)
         # execute search
         # ...
+
+
 
 .. _RawES: https://github.com/humangeo/rawes
