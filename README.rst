@@ -9,7 +9,10 @@ This library helps integrate RawES_ in a pyramid application.
 Installation
 ------------
 
+To install pyramid_rawes, use pip
+
 .. code-block:: bash
+    
     pip install pyramid_rawes
 
 Setup
