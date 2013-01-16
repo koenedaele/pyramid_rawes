@@ -1,7 +1,7 @@
 pyramid_rawes
 =============
 
-This library helps integrate RawES_ in a pyramid application.
+This library helps integrate rawes_ in a pyramid application.
 
 .. image:: https://travis-ci.org/koenedaele/pyramid_rawes.png
         :target: https://travis-ci.org/koenedaele/pyramid_rawes
@@ -28,20 +28,20 @@ To activate pyramid_rawes
 
 By default, this will add an instance with all the default parameters 
 (eg. Elastic Search is assumed to run at localhost:9200). To configure your 
-RawES_ instance, you can use the pyramid settings file.
+rawes_ instance, you can use the pyramid settings file.
 
 .. code-block:: ini
 
     rawes.url = localhost:9500
     rawes.connection_type = http
 
-Once you have activated pyramid_rawes, a RawES_ instance is added to the registry.
+Once you have activated pyramid_rawes, a rawes_ instance is added to the registry.
 
 Usage
 -----
 
-To get a RawES_ instance, call get_rawes with the current application registry. 
-Eg. in a view
+To get a rawes_ instance, call get_rawes with the current application registry. 
+Eg. in a view:
 
 .. code-block:: python
 
@@ -52,6 +52,4 @@ Eg. in a view
         # execute search
         # ...
 
-
-
-.. _RawES: https://github.com/humangeo/rawes
+.. _rawes: https://github.com/humangeo/rawes
