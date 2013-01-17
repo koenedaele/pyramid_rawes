@@ -3,7 +3,7 @@
 from pyramid import testing
 
 from pyramid_rawes import (
-    IRawES,
+    IRawes,
     get_rawes,
     _build_rawes,
     includeme,
@@ -41,14 +41,14 @@ class TestGetAndBuild(unittest.TestCase):
     def test_get_rawes(self):
         r = TestRegistry()
         ES = rawes.Elastic('')
-        r.registerUtility(ES, IRawES)
+        r.registerUtility(ES, IRawes)
         ES2 = get_rawes(r)
         self.assertEquals(ES, ES2)
 
     def test_build_rawes_already_exists(self):
         r = TestRegistry()
         ES = rawes.Elastic('')
-        r.registerUtility(ES, IRawES)
+        r.registerUtility(ES, IRawes)
         ES2 = _build_rawes(r)
         self.assertEquals(ES, ES2)
 
@@ -122,7 +122,7 @@ class TestIncludeMe(unittest.TestCase):
 
     def test_includeme(self):
         includeme(self.config)
-        ES = self.config.registry.queryUtility(IRawES)
+        ES = self.config.registry.queryUtility(IRawes)
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEquals('localhost:9300', ES.url)
 

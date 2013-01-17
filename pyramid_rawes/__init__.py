@@ -7,7 +7,7 @@ from pyramid.settings import asbool
 from zope.interface import Interface
 
 
-class IRawES(Interface):
+class IRawes(Interface):
     pass
 
 
@@ -52,7 +52,7 @@ def _build_rawes(registry):
     """
     Build a RawES connection to Elastic Search and add it to the registry.
     """
-    ES = registry.queryUtility(IRawES)
+    ES = registry.queryUtility(IRawes)
     if ES is not None:
         return ES
 
@@ -67,8 +67,8 @@ def _build_rawes(registry):
                        rawes_args['except_on_error']
                        )
 
-    registry.registerUtility(ES, IRawES)
-    return registry.queryUtility(IRawES)
+    registry.registerUtility(ES, IRawes)
+    return registry.queryUtility(IRawes)
 
 
 def get_rawes(registry):
@@ -79,7 +79,7 @@ def get_rawes(registry):
     regis = getattr(registry, 'registry', None)
     if regis is None:
         regis = registry
-    return regis.queryUtility(IRawES)
+    return regis.queryUtility(IRawes)
 
 
 def includeme(config):
