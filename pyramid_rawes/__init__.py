@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 import rawes
-from rawes.elastic_exception import ElasticException
 
 from pyramid.settings import asbool
 
