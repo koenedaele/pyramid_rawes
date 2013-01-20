@@ -83,5 +83,5 @@ def get_rawes(registry):
 
 
 def includeme(config):
-    rawes = _build_rawes(config.registry)
+    _build_rawes(config.registry)
     config.add_directive('get_rawes', get_rawes)
