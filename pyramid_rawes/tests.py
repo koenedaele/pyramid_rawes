@@ -56,6 +56,7 @@ class TestGetAndBuild(unittest.TestCase):
         r = TestRegistry()
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
+        self.assertEquals('localhost:9200', ES.url.netloc)
 
     def test_build_rawes_custom_settings(self):
         settings = {

@@ -15,11 +15,10 @@ def _parse_settings(settings):
 
     rawes_args = {}
     defaults = {
-        'url': 'localhost:9200',
+        'url': 'http://localhost:9200',
         'timeout': 30,
         'except_on_error': False,
         'path': '',
-        'connection_type': None
     }
 
     rawes_args = defaults.copy()
