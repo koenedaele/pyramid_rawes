@@ -40,14 +40,14 @@ class TestGetAndBuild(unittest.TestCase):
 
     def test_get_rawes(self):
         r = TestRegistry()
-        ES = rawes.Elastic('')
+        ES = rawes.Elastic(url='http://localhost:9200')
         r.registerUtility(ES, IRawes)
         ES2 = get_rawes(r)
         self.assertEquals(ES, ES2)
 
     def test_build_rawes_already_exists(self):
         r = TestRegistry()
-        ES = rawes.Elastic('')
+        ES = rawes.Elastic('http://localhost:9200')
         r.registerUtility(ES, IRawes)
         ES2 = _build_rawes(r)
         self.assertEquals(ES, ES2)
@@ -59,16 +59,15 @@ class TestGetAndBuild(unittest.TestCase):
 
     def test_build_rawes_custom_settings(self):
         settings = {
-            'rawes.url': 'elastic.search.org:9200',
+            'rawes.url': 'http://elastic.search.org:9200',
             'rawes.path': '/search',
             'rawes.timeout': 123,
-            'rawes.connection_type': 'http',
             'rawes.except_on_error': True
         }
         r = TestRegistry(settings)
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('elastic.search.org:9200', ES.url)
+        self.assertEquals('elastic.search.org:9200', ES.url.netloc)
 
 
 class TestSettings(unittest.TestCase):
@@ -76,7 +75,6 @@ class TestSettings(unittest.TestCase):
     def _assert_contains_all_keys(self, args):
         self.assertIn('url', args)
         self.assertIn('path', args)
-        self.assertIn('connection_type', args)
         self.assertIn('except_on_error', args)
         self.assertIn('timeout', args)
 
@@ -87,22 +85,21 @@ class TestSettings(unittest.TestCase):
 
     def test_get_some_settings(self):
         settings = {
-            'rawes.url': 'elastic.search.org:9200',
+            'rawes.url': 'http://elastic.search.org:9200',
             'rawes.timeout': 123,
             'rawes.except_on_error': True
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
-        self.assertEquals('elastic.search.org:9200', args['url'])
+        self.assertEquals('http://elastic.search.org:9200', args['url'])
         self.assertEquals(123, args['timeout'])
         self.assertEquals(True, args['except_on_error'])
 
     def test_get_all_settings(self):
         settings = {
-            'rawes.url': 'elastic.search.org:9200',
+                'rawes.url': 'http://elastic.search.org:9200',
             'rawes.path': '/search',
             'rawes.timeout': 123,
-            'rawes.connection_type': 'http',
             'rawes.except_on_error': True
         }
         args = _parse_settings(settings)
@@ -115,7 +112,7 @@ class TestIncludeMe(unittest.TestCase):
 
     def setUp(self):
         self.config = testing.setUp()
-        self.config.registry.settings['rawes.url'] = 'localhost:9300'
+        self.config.registry.settings['rawes.url'] = 'http://localhost:9300'
 
     def tearDown(self):
         del self.config
@@ -124,10 +121,10 @@ class TestIncludeMe(unittest.TestCase):
         includeme(self.config)
         ES = self.config.registry.queryUtility(IRawes)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('localhost:9300', ES.url)
+        self.assertEquals('localhost:9300', ES.url.netloc)
 
     def test_directive_was_added(self):
         includeme(self.config)
         ES = self.config.get_rawes()
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('localhost:9300', ES.url)
+        self.assertEquals('localhost:9300', ES.url.netloc)
