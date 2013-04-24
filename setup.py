@@ -19,7 +19,7 @@ tests_requires = [
 testing_extras = tests_requires + []
 
 setup(name='pyramid_rawes',
-      version='0.2.0',
+      version='0.2.1',
       license='MIT',
       description='Rawes binding for pyramid',
       long_description=README + '\n\n' +  CHANGES,
