@@ -8,7 +8,7 @@ CHANGES = open(os.path.join(here, 'HISTORY.rst')).read()
 
 requires = [
     'pyramid',
-    'rawes<0.4.0'
+    'rawes>=0.4.0'
     ]
 
 tests_requires = [
@@ -19,7 +19,7 @@ tests_requires = [
 testing_extras = tests_requires + []
 
 setup(name='pyramid_rawes',
-      version='0.2.1',
+      version='0.3.0',
       license='MIT',
       description='Rawes binding for pyramid',
       long_description=README + '\n\n' +  CHANGES,
