@@ -3,7 +3,7 @@ pyramid_rawes
 
 This library helps integrate rawes_ in a pyramid application.
 
-.. image:: https://travis-ci.org/koenedaele/pyramid_rawes.png
+.. image:: https://travis-ci.org/koenedaele/pyramid_rawes.png?branch=master
         :target: https://travis-ci.org/koenedaele/pyramid_rawes
 
 Installation
