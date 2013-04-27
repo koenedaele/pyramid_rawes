@@ -8,7 +8,7 @@ CHANGES = open(os.path.join(here, 'HISTORY.rst')).read()
 
 requires = [
     'pyramid',
-    'rawes>=0.4.0'
+    'rawes>=0.4.0,<0.5.0'
     ]
 
 tests_requires = [
