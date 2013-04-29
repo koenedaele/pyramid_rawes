@@ -15,17 +15,16 @@ def _parse_settings(settings):
 
     rawes_args = {}
     defaults = {
-        'url': 'localhost:9200',
+        'url': 'http://localhost:9200',
         'timeout': 30,
         'except_on_error': False,
         'path': '',
-        'connection_type': None
     }
 
     rawes_args = defaults.copy()
 
     # set string settings
-    for short_key_name in ('url', 'path', 'connection_type'):
+    for short_key_name in ('url', 'path'):
         key_name = 'rawes.%s' % (short_key_name,)
         if key_name in settings:
             rawes_args[short_key_name] = \
@@ -62,7 +61,6 @@ def _build_rawes(registry):
     ES = rawes.Elastic(rawes_args['url'],
                        rawes_args['path'],
                        rawes_args['timeout'],
-                       rawes_args['connection_type'],
                        None,
                        rawes_args['except_on_error']
                        )

@@ -32,8 +32,7 @@ rawes_ instance, you can use the pyramid settings file.
 
 .. code-block:: ini
 
-    rawes.url = localhost:9500
-    rawes.connection_type = http
+    rawes.url = http://localhost:9500
 
 Once you have activated pyramid_rawes, a rawes_ instance is added to the registry.
 
