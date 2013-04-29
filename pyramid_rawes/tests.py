@@ -98,7 +98,7 @@ class TestSettings(unittest.TestCase):
 
     def test_get_all_settings(self):
         settings = {
-                'rawes.url': 'http://elastic.search.org:9200',
+            'rawes.url': 'http://elastic.search.org:9200',
             'rawes.path': '/search',
             'rawes.timeout': 123,
             'rawes.except_on_error': True
