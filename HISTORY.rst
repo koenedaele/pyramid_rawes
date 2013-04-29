@@ -1,7 +1,7 @@
 History
 =======
 
-0.3.0 (??-04-2013)
+0.3.0 (29-04-2013)
 ------------------
 
 - Make pyramid_rawes compatible with rawes 0.4.0.
