@@ -62,8 +62,7 @@ class TestGetAndBuild(unittest.TestCase):
         settings = {
             'rawes.url': 'http://elastic.search.org:9200',
             'rawes.path': '/search',
-            'rawes.timeout': 123,
-            'rawes.except_on_error': True
+            'rawes.timeout': 123
         }
         r = TestRegistry(settings)
         ES = _build_rawes(r)
@@ -76,7 +75,6 @@ class TestSettings(unittest.TestCase):
     def _assert_contains_all_keys(self, args):
         self.assertIn('url', args)
         self.assertIn('path', args)
-        self.assertIn('except_on_error', args)
         self.assertIn('timeout', args)
 
     def test_get_default_settings(self):
@@ -88,25 +86,21 @@ class TestSettings(unittest.TestCase):
         settings = {
             'rawes.url': 'http://elastic.search.org:9200',
             'rawes.timeout': 123,
-            'rawes.except_on_error': True
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
         self.assertEquals('http://elastic.search.org:9200', args['url'])
         self.assertEquals(123, args['timeout'])
-        self.assertEquals(True, args['except_on_error'])
 
     def test_get_all_settings(self):
         settings = {
             'rawes.url': 'http://elastic.search.org:9200',
             'rawes.path': '/search',
             'rawes.timeout': 123,
-            'rawes.except_on_error': True
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
         self.assertEquals(123, args['timeout'])
-        self.assertEquals(True, args['except_on_error'])
 
 
 class TestIncludeMe(unittest.TestCase):

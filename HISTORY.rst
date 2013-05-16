@@ -1,6 +1,12 @@
 History
 =======
 
+0.4.0 (??-05-2013)
+------------------
+
+- Make pyramid_rawes compatible with rawes 0.5.x
+- Introduce unit test support for py3k (requires rawes 0.5.1)
+
 0.3.0 (29-04-2013)
 ------------------
 

@@ -17,7 +17,6 @@ def _parse_settings(settings):
     defaults = {
         'url': 'http://localhost:9200',
         'timeout': 30,
-        'except_on_error': False,
         'path': '',
     }
 
@@ -29,13 +28,6 @@ def _parse_settings(settings):
         if key_name in settings:
             rawes_args[short_key_name] = \
                 settings.get(key_name, defaults.get(short_key_name))
-
-    # boolean settings
-    for short_key_name in ('except_on_error',):
-        key_name = 'rawes.%s' % (short_key_name,)
-        if key_name in settings:
-            rawes_args[short_key_name] = \
-                asbool(settings.get(key_name, defaults.get(short_key_name)))
 
     # integer settings
     for short_key_name in ('timeout',):
@@ -62,7 +54,6 @@ def _build_rawes(registry):
                        rawes_args['path'],
                        rawes_args['timeout'],
                        None,
-                       rawes_args['except_on_error']
                        )
 
     registry.registerUtility(ES, IRawes)
