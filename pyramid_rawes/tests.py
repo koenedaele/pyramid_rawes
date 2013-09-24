@@ -43,20 +43,20 @@ class TestGetAndBuild(unittest.TestCase):
         ES = rawes.Elastic(url='http://localhost:9200')
         r.registerUtility(ES, IRawes)
         ES2 = get_rawes(r)
-        self.assertEquals(ES, ES2)
+        self.assertEqual(ES, ES2)
 
     def test_build_rawes_already_exists(self):
         r = TestRegistry()
         ES = rawes.Elastic('http://localhost:9200')
         r.registerUtility(ES, IRawes)
         ES2 = _build_rawes(r)
-        self.assertEquals(ES, ES2)
+        self.assertEqual(ES, ES2)
 
     def test_build_rawes_default_settings(self):
         r = TestRegistry()
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('localhost:9200', ES.url.netloc)
+        self.assertEqual('localhost:9200', ES.url.netloc)
 
     def test_build_rawes_custom_settings(self):
         settings = {
@@ -67,7 +67,7 @@ class TestGetAndBuild(unittest.TestCase):
         r = TestRegistry(settings)
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('elastic.search.org:9200', ES.url.netloc)
+        self.assertEqual('elastic.search.org:9200', ES.url.netloc)
 
 
 class TestSettings(unittest.TestCase):
@@ -89,8 +89,8 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
-        self.assertEquals('http://elastic.search.org:9200', args['url'])
-        self.assertEquals(123, args['timeout'])
+        self.assertEqual('http://elastic.search.org:9200', args['url'])
+        self.assertEqual(123, args['timeout'])
 
     def test_get_all_settings(self):
         settings = {
@@ -100,7 +100,7 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
-        self.assertEquals(123, args['timeout'])
+        self.assertEqual(123, args['timeout'])
 
 
 class TestIncludeMe(unittest.TestCase):
@@ -116,10 +116,10 @@ class TestIncludeMe(unittest.TestCase):
         includeme(self.config)
         ES = self.config.registry.queryUtility(IRawes)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('localhost:9300', ES.url.netloc)
+        self.assertEqual('localhost:9300', ES.url.netloc)
 
     def test_directive_was_added(self):
         includeme(self.config)
         ES = self.config.get_rawes()
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEquals('localhost:9300', ES.url.netloc)
+        self.assertEqual('localhost:9300', ES.url.netloc)
