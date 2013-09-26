@@ -6,6 +6,11 @@ from pyramid.settings import asbool
 
 from zope.interface import Interface
 
+from rawes.encoders import encode_date_optional_time
+
+from pyramid.path import (
+    DottedNameResolver
+)
 
 class IRawes(Interface):
     pass
@@ -18,6 +23,7 @@ def _parse_settings(settings):
         'url': 'http://localhost:9200',
         'timeout': 30,
         'path': '',
+        'json_encoder': encode_date_optional_time
     }
 
     rawes_args = defaults.copy()
@@ -36,6 +42,14 @@ def _parse_settings(settings):
             rawes_args[short_key_name] = \
                 int(settings.get(key_name, defaults.get(short_key_name)))
 
+    # function name settings
+    for short_key_name in ('json_encoder',):
+        key_name = 'rawes.%s' % (short_key_name,)
+        r = DottedNameResolver()
+        if key_name in settings:
+            rawes_args[short_key_name] = \
+                r.resolve(settings.get(key_name))
+
     return rawes_args
 
 
@@ -50,11 +64,12 @@ def _build_rawes(registry):
     settings = registry.settings
     rawes_args = _parse_settings(settings)
 
-    ES = rawes.Elastic(rawes_args['url'],
-                       rawes_args['path'],
-                       rawes_args['timeout'],
-                       None,
-                       )
+    ES = rawes.Elastic(
+        url = rawes_args['url'],
+        path = rawes_args['path'],
+        timeout = rawes_args['timeout'],
+        json_encoder = rawes_args['json_encoder']
+    )
 
     registry.registerUtility(ES, IRawes)
     return registry.queryUtility(IRawes)

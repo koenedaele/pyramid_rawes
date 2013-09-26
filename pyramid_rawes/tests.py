@@ -17,6 +17,8 @@ try:
 except ImportError:
     import unittest  # noqa
 
+def dummy_encoder(obj):
+    return obj
 
 class TestRegistry(object):
 
@@ -102,12 +104,19 @@ class TestSettings(unittest.TestCase):
         self._assert_contains_all_keys(args)
         self.assertEqual(123, args['timeout'])
 
+    def test_get_dotted_function_settings(self):
+        settings = {
+            'rawes.json_encoder': 'pyramid_rawes.tests.dummy_encoder'
+        }
+        args = _parse_settings(settings)
+        self.assertEqual(dummy_encoder, args['json_encoder'])
 
 class TestIncludeMe(unittest.TestCase):
 
     def setUp(self):
         self.config = testing.setUp()
         self.config.registry.settings['rawes.url'] = 'http://localhost:9300'
+        self.config.registry.settings['rawes.json_encoder'] = 'pyramid_rawes.tests.dummy_encoder'
 
     def tearDown(self):
         del self.config
@@ -117,6 +126,7 @@ class TestIncludeMe(unittest.TestCase):
         ES = self.config.registry.queryUtility(IRawes)
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEqual('localhost:9300', ES.url.netloc)
+        self.assertEqual('test',ES.json_encoder('test'))
 
     def test_directive_was_added(self):
         includeme(self.config)
