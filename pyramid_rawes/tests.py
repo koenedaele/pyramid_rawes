@@ -28,7 +28,7 @@ class DummyDecoder(json.JSONDecoder):
         json.JSONDecoder.__init__(self, object_hook=self.dict_to_object)
     
     def dict_to_object(self, d):
-        for k,v in d.iteritems():
+        for k,v in d.items():
             d[k] = 'DUMMY'
         return d
 
