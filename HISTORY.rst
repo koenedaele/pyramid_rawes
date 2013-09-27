@@ -1,12 +1,13 @@
 History
 =======
 
-0.4.0 (??-05-2013)
+0.4.0 (27-09-2013)
 ------------------
 
 - Make pyramid_rawes compatible with rawes 0.5.x
 - Introduce unit test support for py3k (requires rawes 0.5.1)
-- Ability to specify json_encoder as dotted python name.
+- Ability to specify json_encoder and json_decoder as dotted python name.
+- Dropped support for py26.
 
 0.3.0 (29-04-2013)
 ------------------
