@@ -12,6 +12,7 @@ from pyramid_rawes import (
 
 import rawes
 import json
+import warnings
 
 try:
     import unittest2 as unittest
@@ -121,6 +122,14 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self.assertEqual(dummy_encoder, args['json_encoder'])
+
+    def test_get_unsupported_settings(self):
+        settings = {
+            'rawes.except_on_error': False
+        }
+        with warnings.catch_warnings(record=True) as w:
+            args = _parse_settings(settings)
+            self.assertEqual(1, len(w))
 
 class TestIncludeMe(unittest.TestCase):
 

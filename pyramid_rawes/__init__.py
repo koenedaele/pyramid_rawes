@@ -12,6 +12,8 @@ from pyramid.path import (
     DottedNameResolver
 )
 
+import warnings
+
 class IRawes(Interface):
     pass
 
@@ -55,6 +57,15 @@ def _parse_settings(settings):
         if key_name in settings:
             rawes_args[short_key_name] = \
                 r.resolve(settings.get(key_name))().decode
+
+    # removed settings
+    for short_key_name in ('connection_type', 'except_on_error'):
+        key_name = 'rawes.%s' % (short_key_name,)
+        if key_name in settings:
+            warnings.warn(
+                '%s is no longer supported, please remove from your settings.',
+                UserWarning
+            )
 
     return rawes_args
 
