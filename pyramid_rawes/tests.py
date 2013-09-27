@@ -11,6 +11,7 @@ from pyramid_rawes import (
 )
 
 import rawes
+import json
 
 try:
     import unittest2 as unittest
@@ -19,6 +20,16 @@ except ImportError:
 
 def dummy_encoder(obj):
     return obj
+
+class DummyDecoder(json.JSONDecoder):
+    
+    def __init__(self):
+        json.JSONDecoder.__init__(self, object_hook=self.dict_to_object)
+    
+    def dict_to_object(self, d):
+        for k,v in d.iteritems():
+            d[k] = 'DUMMY'
+        return d
 
 class TestRegistry(object):
 
@@ -117,6 +128,7 @@ class TestIncludeMe(unittest.TestCase):
         self.config = testing.setUp()
         self.config.registry.settings['rawes.url'] = 'http://localhost:9300'
         self.config.registry.settings['rawes.json_encoder'] = 'pyramid_rawes.tests.dummy_encoder'
+        self.config.registry.settings['rawes.json_decoder'] = 'pyramid_rawes.tests.DummyDecoder'
 
     def tearDown(self):
         del self.config
@@ -127,6 +139,8 @@ class TestIncludeMe(unittest.TestCase):
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEqual('localhost:9300', ES.url.netloc)
         self.assertEqual('test',ES.json_encoder('test'))
+        self.assertEqual(dummy_encoder, ES.json_encoder)
+        self.assertEqual({'test': 'DUMMY'}, ES.connection.kwargs['json_decoder']('{"test": 1}'))
 
     def test_directive_was_added(self):
         includeme(self.config)
