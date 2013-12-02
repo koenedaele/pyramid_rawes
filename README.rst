@@ -5,6 +5,8 @@ This library helps integrate rawes_ in a pyramid application.
 
 .. image:: https://travis-ci.org/koenedaele/pyramid_rawes.png?branch=master
         :target: https://travis-ci.org/koenedaele/pyramid_rawes
+.. image:: https://badge.fury.io/py/pyramid_rawes.png
+        :target: http://badge.fury.io/py/pyramid_rawes
 
 Installation
 ------------
