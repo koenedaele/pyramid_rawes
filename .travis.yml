@@ -3,6 +3,9 @@ python:
  - 2.7
  - 3.2
  - 3.3
+ - 3.4
 install:
  - python setup.py develop
+ - pip install coveralls
 script: python setup.py nosetests
+after_success: coveralls
