@@ -74,7 +74,7 @@ def _build_rawes(registry):
     """
     Build a RawES connection to Elastic Search and add it to the registry.
     """
-    ES = registry.queryUtility(IRawes)
+    ES = registry.queryUtility(IRawes, 'rawes')
     if ES is not None:
         return ES
 
@@ -83,8 +83,8 @@ def _build_rawes(registry):
 
     ES = rawes.Elastic(**rawes_args)
 
-    registry.registerUtility(ES, IRawes)
-    return registry.queryUtility(IRawes)
+    registry.registerUtility(ES, IRawes, 'rawes')
+    return registry.queryUtility(IRawes, 'rawes')
 
 
 def get_rawes(registry):
@@ -95,7 +95,7 @@ def get_rawes(registry):
     regis = getattr(registry, 'registry', None)
     if regis is None:
         regis = registry
-    return regis.queryUtility(IRawes)
+    return regis.queryUtility(IRawes, 'rawes')
 
 
 def includeme(config):

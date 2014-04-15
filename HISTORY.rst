@@ -1,6 +1,11 @@
 History
 =======
 
+0.4.1 (15-04-2014)
+------------------
+
+- Restore compatibility with zope.interface 4.1.x
+
 0.4.0 (27-09-2013)
 ------------------
 

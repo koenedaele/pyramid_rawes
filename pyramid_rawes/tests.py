@@ -43,10 +43,10 @@ class TestRegistry(object):
 
         self.rawes = None
 
-    def queryUtility(self, iface):
+    def queryUtility(self, iface, name):
         return self.rawes
 
-    def registerUtility(self, rawes, iface):
+    def registerUtility(self, rawes, iface, name):
         self.rawes = rawes
 
 
@@ -55,14 +55,14 @@ class TestGetAndBuild(unittest.TestCase):
     def test_get_rawes(self):
         r = TestRegistry()
         ES = rawes.Elastic(url='http://localhost:9200')
-        r.registerUtility(ES, IRawes)
+        r.registerUtility(ES, IRawes, 'rawes')
         ES2 = get_rawes(r)
         self.assertEqual(ES, ES2)
 
     def test_build_rawes_already_exists(self):
         r = TestRegistry()
         ES = rawes.Elastic('http://localhost:9200')
-        r.registerUtility(ES, IRawes)
+        r.registerUtility(ES, IRawes, 'rawes')
         ES2 = _build_rawes(r)
         self.assertEqual(ES, ES2)
 
@@ -144,7 +144,7 @@ class TestIncludeMe(unittest.TestCase):
 
     def test_includeme(self):
         includeme(self.config)
-        ES = self.config.registry.queryUtility(IRawes)
+        ES = self.config.registry.queryUtility(IRawes, 'rawes')
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEqual('localhost:9300', ES.url.netloc)
         self.assertEqual('test',ES.json_encoder('test'))
