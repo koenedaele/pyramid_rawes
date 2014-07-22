@@ -12,6 +12,7 @@ from pyramid_rawes import (
 
 import rawes
 import warnings
+import unittest
 
 from .fixtures import (
     dummy_encoder,
