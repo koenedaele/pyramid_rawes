@@ -2,18 +2,21 @@
 
 import json
 
+
 def dummy_encoder(obj):
     return obj
 
+
 class DummyDecoder(json.JSONDecoder):
-    
+
     def __init__(self):
         json.JSONDecoder.__init__(self, object_hook=self.dict_to_object)
-    
+
     def dict_to_object(self, d):
-        for k,v in d.items():
+        for k, v in d.items():
             d[k] = 'DUMMY'
         return d
+
 
 class TestRegistry(object):
 

@@ -18,11 +18,6 @@ from .fixtures import (
     TestRegistry
 )
 
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest  # noqa
-
 
 class TestGetAndBuild(unittest.TestCase):
 
@@ -105,6 +100,7 @@ class TestSettings(unittest.TestCase):
             args = _parse_settings(settings)
             self.assertEqual(1, len(w))
 
+
 class TestIncludeMe(unittest.TestCase):
 
     def setUp(self):
@@ -121,9 +117,12 @@ class TestIncludeMe(unittest.TestCase):
         ES = self.config.registry.queryUtility(IRawes, 'rawes')
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEqual('localhost:9300', ES.url.netloc)
-        self.assertEqual('test',ES.json_encoder('test'))
+        self.assertEqual('test', ES.json_encoder('test'))
         self.assertEqual(dummy_encoder, ES.json_encoder)
-        self.assertEqual({'test': 'DUMMY'}, ES.connection.kwargs['json_decoder']('{"test": 1}'))
+        self.assertEqual(
+            {'test': 'DUMMY'},
+            ES.connection.kwargs['json_decoder']('{"test": 1}')
+        )
 
     def test_directive_was_added(self):
         includeme(self.config)
