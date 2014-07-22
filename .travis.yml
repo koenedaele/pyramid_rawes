@@ -3,8 +3,9 @@ python:
  - 2.7
  - 3.2
  - 3.3
+ - 3.4
 install:
  - python setup.py develop
- - pip install coveralls
-script: python setup.py nosetests
+ - pip install pytest pytest-cov coveralls
+script: py.test --cov pyramid_rawes
 after_success: coveralls
