@@ -40,7 +40,7 @@ class TestGetAndBuild(unittest.TestCase):
         r = TestRegistry()
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEqual('localhost:9200', ES.url.netloc)
+        self.assertEqual(1, len(ES.connection_pool.connections))
 
     def test_build_rawes_custom_settings(self):
         settings = {
@@ -51,7 +51,7 @@ class TestGetAndBuild(unittest.TestCase):
         r = TestRegistry(settings)
         ES = _build_rawes(r)
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEqual('elastic.search.org:9200', ES.url.netloc)
+        self.assertEqual(1, len(ES.connection_pool.connections))
 
 
 class TestSettings(unittest.TestCase):
@@ -117,16 +117,16 @@ class TestIncludeMe(unittest.TestCase):
         includeme(self.config)
         ES = self.config.registry.queryUtility(IRawes, 'rawes')
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEqual('localhost:9300', ES.url.netloc)
+        self.assertEqual(1, len(ES.connection_pool.connections))
         self.assertEqual('test', ES.json_encoder('test'))
         self.assertEqual(dummy_encoder, ES.json_encoder)
         self.assertEqual(
             {'test': 'DUMMY'},
-            ES.connection.kwargs['json_decoder']('{"test": 1}')
+            ES.connection_pool.connections[0].kwargs['json_decoder']('{"test": 1}')
         )
 
     def test_directive_was_added(self):
         includeme(self.config)
         ES = self.config.get_rawes()
         self.assertIsInstance(ES, rawes.Elastic)
-        self.assertEqual('localhost:9300', ES.url.netloc)
+        self.assertEqual(1, len(ES.connection_pool.connections))
