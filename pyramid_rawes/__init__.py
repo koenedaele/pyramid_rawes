@@ -2,7 +2,7 @@
 
 import rawes
 
-from pyramid.settings import asbool
+from pyramid.settings import aslist
 
 from zope.interface import Interface
 
@@ -32,11 +32,18 @@ def _parse_settings(settings):
     rawes_args = defaults.copy()
 
     # set string settings
-    for short_key_name in ('url', 'path'):
+    for short_key_name in ('path',):
         key_name = 'rawes.%s' % (short_key_name,)
         if key_name in settings:
             rawes_args[short_key_name] = \
                 settings.get(key_name, defaults.get(short_key_name))
+
+    # set list settings
+    for short_key_name in ('url',):
+        key_name = 'rawes.%s' % (short_key_name,)
+        if key_name in settings:
+            rawes_args[short_key_name] = \
+                aslist(settings.get(key_name, defaults.get(short_key_name)))
 
     # integer settings
     for short_key_name in ('timeout',):

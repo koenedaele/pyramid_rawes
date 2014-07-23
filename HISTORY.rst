@@ -5,6 +5,7 @@ History
 ------------------
 
 - Switch to py.test for unit tests.
+- Add ability to specify several ES hosts in the url setting.
 
 0.4.1 (15-04-2014)
 ------------------

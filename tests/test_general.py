@@ -53,6 +53,17 @@ class TestGetAndBuild(unittest.TestCase):
         self.assertIsInstance(ES, rawes.Elastic)
         self.assertEqual(1, len(ES.connection_pool.connections))
 
+    def test_build_rawes_url_list_settings(self):
+        settings = {
+            'rawes.url': 'http://el1.search.org:9200\nhttp://el2.search.org:9200',
+            'rawes.path': '/search',
+            'rawes.timeout': 123
+        }
+        r = TestRegistry(settings)
+        ES = _build_rawes(r)
+        self.assertIsInstance(ES, rawes.Elastic)
+        self.assertEqual(2, len(ES.connection_pool.connections))
+
 
 class TestSettings(unittest.TestCase):
 
@@ -73,7 +84,7 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
-        self.assertEqual('http://elastic.search.org:9200', args['url'])
+        self.assertEqual(['http://elastic.search.org:9200'], args['url'])
         self.assertEqual(123, args['timeout'])
 
     def test_get_all_settings(self):
@@ -92,6 +103,19 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self.assertEqual(dummy_encoder, args['json_encoder'])
+
+    def test_list_settings(self):
+        settings = {
+            'rawes.url': 'http://el1.search.org:9200\nhttp://el2.search.org:9200'
+        }
+        args = _parse_settings(settings)
+        self.assertEqual(
+            [
+                'http://el1.search.org:9200',
+                'http://el2.search.org:9200'
+            ], 
+            args['url']
+        )
 
     def test_get_unsupported_settings(self):
         settings = {
