@@ -13,7 +13,7 @@ requires = [
 
 setup(
     name='pyramid_rawes',
-    version='0.5.0',
+    version='0.5.1',
     license='MIT',
     description='Rawes bindings for pyramid',
     long_description=README + '\n\n' +  CHANGES,

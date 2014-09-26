@@ -1,6 +1,12 @@
 History
 =======
 
+0.5.1 (26-09-2014)
+------------------
+
+- If only one url is specified, don't pass a list to rawes, but a string. This
+  allows rawes to autodetect paths. (#2)
+
 0.5.0 (27-08-2014)
 ------------------
 
