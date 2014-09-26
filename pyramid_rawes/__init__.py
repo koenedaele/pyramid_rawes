@@ -44,8 +44,8 @@ def _parse_settings(settings):
         if key_name in settings:
             rawes_args[short_key_name] = \
                 (aslist(settings.get(key_name, defaults.get(short_key_name)))
-		if len(aslist(settings.get(key_name, defaults.get(short_key_name)))) > 1
-		else settings.get(key_name, defaults.get(short_key_name)).strip())
+		        if len(aslist(settings.get(key_name, defaults.get(short_key_name)))) > 1
+		        else settings.get(key_name, defaults.get(short_key_name)).strip())
 
     # integer settings
     for short_key_name in ('timeout',):
