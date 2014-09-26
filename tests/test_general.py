@@ -84,8 +84,14 @@ class TestSettings(unittest.TestCase):
         }
         args = _parse_settings(settings)
         self._assert_contains_all_keys(args)
-        self.assertEqual(['http://elastic.search.org:9200'], args['url'])
+        self.assertEqual('http://elastic.search.org:9200', args['url'])
         self.assertEqual(123, args['timeout'])
+        settings = {
+                'rawes.url': 'http://elastic.search.org:9200\nhttp://elastic.search.org:9300',
+        }
+        args = _parse_settings(settings)
+        self._assert_contains_all_keys(args)
+        self.assertEqual(['http://elastic.search.org:9200', 'http://elastic.search.org:9300'], args['url'])
 
     def test_get_all_settings(self):
         settings = {
